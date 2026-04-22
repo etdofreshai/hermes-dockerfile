@@ -4,6 +4,23 @@ set -euo pipefail
 mkdir -p /opt/data
 touch /opt/data/.env
 
+redact_secret() {
+  local value="${1-}"
+  local len="${#value}"
+
+  if [[ -z "$value" ]]; then
+    printf "<missing>"
+    return
+  fi
+
+  if (( len <= 8 )); then
+    printf "<set:%s-chars>" "$len"
+    return
+  fi
+
+  printf "%s...%s (%s chars)" "${value:0:4}" "${value: -4}" "$len"
+}
+
 upsert_env() {
   local key="$1"
   local value="${2-}"
@@ -47,6 +64,13 @@ for key in \
 do
   upsert_env "$key" "${!key-}"
 done
+
+persisted_api_server_key=""
+if grep -q '^API_SERVER_KEY=' /opt/data/.env 2>/dev/null; then
+  persisted_api_server_key="$(grep '^API_SERVER_KEY=' /opt/data/.env | tail -n 1 | cut -d= -f2-)"
+fi
+
+echo "Startup diagnostics: API_SERVER_KEY env=$(redact_secret "${API_SERVER_KEY-}") file=$(redact_secret "$persisted_api_server_key") HERMES_HOME=${HERMES_HOME:-<unset>}" >&2
 
 if [[ ! -f /opt/data/config.yaml ]]; then
   cat >&2 <<'MSG'
