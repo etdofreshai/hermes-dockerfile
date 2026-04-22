@@ -1,12 +1,21 @@
 FROM nousresearch/hermes-agent:latest
 
+ENV RUSTUP_HOME=/usr/local/rustup
+ENV CARGO_HOME=/usr/local/cargo
+ENV PATH=/usr/local/cargo/bin:${PATH}
+
 USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
     ffmpeg \
     openssh-client \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable && \
+    rustup component add clippy rustfmt
 
 RUN python3 -m pip install --break-system-packages --no-cache-dir faster-whisper
 
