@@ -12,4 +12,4 @@ RUN chmod +x /usr/local/bin/start-hermes.sh
 
 VOLUME ["/opt/data"]
 
-CMD ["/usr/local/bin/start-hermes.sh"]
+ENTRYPOINT ["/usr/local/bin/start-hermes.sh"]
