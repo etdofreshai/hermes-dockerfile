@@ -12,6 +12,4 @@ RUN chmod +x /usr/local/bin/start-hermes.sh
 
 VOLUME ["/opt/data"]
 
-EXPOSE 8642
-
 CMD ["/usr/local/bin/start-hermes.sh"]

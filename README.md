@@ -26,10 +26,12 @@ Recommended Dokploy configuration:
 - Volume mount:
   - name: `hermes-data`
   - mount path: `/opt/data`
-- Exposed port:
+- Application port:
   - `8642`
-- Domain:
-  - optional at first; prefer private/internal access until the service is stable
+- Domain / routing:
+  - let Dokploy Traefik route to the app
+  - do not publish a raw external host port separately
+  - prefer keeping the service private until the gateway is stable
 
 ## Suggested env vars
 
