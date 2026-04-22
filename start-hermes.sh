@@ -57,4 +57,4 @@ for messaging, memory, and command policy.
 MSG
 fi
 
-exec hermes gateway run
+exec /opt/hermes/docker/entrypoint.sh gateway run
