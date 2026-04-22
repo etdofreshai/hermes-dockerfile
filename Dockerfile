@@ -2,6 +2,12 @@ FROM nousresearch/hermes-agent:latest
 
 USER root
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN /opt/hermes/.venv/bin/pip install --no-cache-dir faster-whisper
+
 ENV HERMES_HOME=/opt/data
 ENV API_SERVER_ENABLED=true
 ENV API_SERVER_HOST=0.0.0.0
