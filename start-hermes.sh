@@ -81,4 +81,13 @@ for messaging, memory, and command policy.
 MSG
 fi
 
+# Reapply ET's persistent Telegram voice UX patch at container startup.
+# /opt/hermes is image/overlay code and is replaced on container restart;
+# /opt/data is the persistent volume that stores the patch source.
+if [[ -x /opt/data/scripts/reapply-telegram-voice-patch.py ]]; then
+  /opt/data/scripts/reapply-telegram-voice-patch.py >&2 || {
+    echo "WARNING: failed to reapply Telegram voice patch; continuing startup" >&2
+  }
+fi
+
 exec /opt/hermes/docker/entrypoint.sh gateway run

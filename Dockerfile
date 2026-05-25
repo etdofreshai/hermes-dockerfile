@@ -19,7 +19,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --pr
 
 RUN python3 -m pip install --break-system-packages --no-cache-dir faster-whisper
 
-RUN npm install -g @openai/codex
+RUN npm install -g --no-audit @openai/codex
 
 ENV HERMES_HOME=/opt/data
 ENV API_SERVER_ENABLED=true
